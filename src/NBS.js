@@ -552,7 +552,7 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
   }
   /*
   // Layers (optional section)
-  if (arrayBuffer.byteLength > currentByte) {
+  if (arrayBuffer.byteLength > currentByte) { // FIXME: EOF
     for (let i = 0; i < totalLayers; i++) {
       const layer = song.addLayer();
       layer.name = readString();
@@ -560,6 +560,7 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
       if (song.version>=2) currentByte+=1
     }
   } */
+  // TODO: Read instruments
 
   // Process raw notes and convert them to real Note objects.
   // Cannot be done while parsing because information about layers and other things might not exist yet.
@@ -587,6 +588,7 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
  * Converts a song to an array buffer containing the bytes of the corresponding .nbs file
  */
 Song.toArrayBuffer = function songToArrayBuffer(song) {
+  const version = MAX_VERSION
   // https://www.stuffbydavid.com/mcnbs/format
 
   // Writing to a buffer involves 2 "passes".
@@ -603,7 +605,16 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
     writeInt,
   }) {
     // Part 1 - Header
-    writeShort(song.size);
+    if (version==0) {
+      writeShort(song.size);
+    } else {
+      writeShort(0)
+      writeByte(version)
+      writeByte(0)
+      if (version>=3) {
+        writeShort(song.size)
+      }
+    }
     writeShort(song.layers.length);
     writeString(song.name);
     writeString(song.author);
@@ -619,7 +630,9 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
     writeInt(song.blocksAdded); // blocks added
     writeInt(song.blocksRemoved); // blocks removed
     writeString(song.midiName); // midi/schematic name
-
+    if (version>=4) {
+      writeInt(0) // Loop, length: 4 bytes
+    }
     // Part 2 - Notes
     let currentTick = -1;
     for (let i = 0; i < song.size; i++) {
@@ -653,6 +666,11 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
           writeShort(jumpsToNextLayer); // Part 2 step 2 - jumps to next layer
           writeByte(note.instrument.id); // Part 2 step 3 - instrument
           writeByte(note.key); // Part 2 step 4 - key
+          if(version>=4) {
+            writeByte(note.velocity)
+            writeByte(note.panning)
+            writeShort(note.pitch)
+          }
         }
       }
 
@@ -666,6 +684,9 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
     for (const layer of song.layers) {
       writeString(layer.name);
       writeByte(Math.floor(layer.volume * 100)); // we store volume as 0-1 but it the format needs 0-100
+      if (version>=2) {
+        writeByte(100)
+      }
     }
 
     // Part 4 - Custom Instruments.
