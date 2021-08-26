@@ -1,6 +1,6 @@
 # nbsplayer
 
-[Minecraft Note Block Studio](https://www.stuffbydavid.com/mcnbs) as a website.
+[Minecraft Note Block Studio](https://github.com/HielkeMinecraft/OpenNoteBlockStudio) as a website.
 
 nbsplayer is a Vue app using vue-cli. The entry point is src/main.js.
 
@@ -9,7 +9,7 @@ nbsplayer is a Vue app using vue-cli. The entry point is src/main.js.
 ### Cloning
 
 ```bash
-git clone https://github.com/GarboMuffin/nbsplayer
+git clone https://github.com/mckuhei/nbsplayer
 ```
 
 ### Installing dependencies
