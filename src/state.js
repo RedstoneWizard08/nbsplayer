@@ -102,11 +102,11 @@ export const state = new Vue({
       if (b instanceof Instrument) {
         var key = (typeof note === "number" ? note : note.key);
         var instrument = b;
-        var volume = c ? c.volume : 100;
+        var volume = (c ? c.volume : 100) * (typeof note === "number" ? 100 : note.velocity) / 100;
       } else {
         var key = note.key;
         var instrument = note.instrument;
-        var volume = b ? b.volume : 100;
+        var volume = (b ? b.volume : 100) * note.velocity / 100;
       }
 
       WebAudioNotePlayer.playNote(key - this.options.keyOffset, instrument, volume);

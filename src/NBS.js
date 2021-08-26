@@ -9,6 +9,7 @@ import { WebAudioNotePlayer } from "./audio";
  */
 export class Song {
   constructor() {
+    this.version = 0
     /**
      * The name (or title) of this song.
      */
@@ -188,13 +189,16 @@ export class Layer {
    * Sets the note at a given tick with a given key and instrument.
    * Automatically expands the song's size if it has now grown.
    */
-  setNote(tick, key, instrument) {
+  setNote(tick, key, instrument, velocity, panning, pitch) {
     if (tick + 1 > this.song.size) {
       this.song.size = tick + 1;
     }
     const note = new Note(this, tick);
     note.key = key;
     note.instrument = instrument;
+    note.velocity = velocity
+    note.panning = panning
+    note.pitch = pitch
     this.notes[tick] = note;
     return note;
   }
@@ -242,6 +246,9 @@ export class Note {
      * TODO: does this need to be here?
      */
     this.lastPlayed = null;
+    this.velocity = 100;
+    this.panning = 100;
+    this.pitch = 0
   }
 }
 
@@ -414,7 +421,7 @@ Instrument.builtin = [
     require("./assets/instruments/textures/pling.png"),
   ),
 ];
-
+const MAX_VERSION=5
 /**
  * Parses an array buffer containg the bytes of a .nbs file as a Song.
  */
@@ -477,6 +484,11 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
 
   // Header
   song.size = readShort();
+  if (song.size==0) {
+    song.version=readByte()
+    currentByte+=1
+    song.size=readShort()
+  }
   const totalLayers = readShort();
   song.name = readString();
   song.author = readString();
@@ -492,6 +504,9 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
   song.blocksAdded = readInt();
   song.blocksRemoved = readInt();
   song.midiName = readString();
+  if (song.version>=4) { // TODO: loop
+    currentByte+=4
+  }
 
   // Note Blocks
   // The format website linked somewhere above does a much better job at explaining this than I could.
@@ -512,6 +527,16 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
       currentLayer += jumpsToNextLayer;
       const instrumentId = readByte();
       const key = readByte();
+      let vel,pan,pit;
+      if (song.version>=4) {
+        vel = readByte()
+        pan = readByte()
+        pit = readShort()
+      } else {
+        vel = 100
+        pan = 100
+        pit = 0
+      }
 
       // We'll process the raw note into a real Note object later.
       rawNotes.push({
@@ -519,18 +544,22 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
         key,
         layer: currentLayer,
         tick: currentTick,
+        velocity: vel,
+        panning: pan,
+        pitch: pit,
       });
     }
   }
-
+  /*
   // Layers (optional section)
   if (arrayBuffer.byteLength > currentByte) {
     for (let i = 0; i < totalLayers; i++) {
       const layer = song.addLayer();
       layer.name = readString();
       layer.volume = readByte() / 100;
+      if (song.version>=2) currentByte+=1
     }
-  }
+  } */
 
   // Process raw notes and convert them to real Note objects.
   // Cannot be done while parsing because information about layers and other things might not exist yet.
@@ -548,7 +577,7 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
     const tick = rn.tick;
     const instrument = song.instruments[rn.instrument];
 
-    layer.setNote(tick, key, instrument);
+    layer.setNote(tick, key, instrument,rn.velocity,rn.panning,rn.pitch);
   }
 
   return song;
