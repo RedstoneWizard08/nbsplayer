@@ -142,7 +142,7 @@ export default {
 
       for (const layer of song.layers) {
         const note = layer.notes[song.tick];
-        if (note) {
+        if (note&&!layer.locked) {
           state.playNote(note, layer);
           note.lastPlayed = time;
         }

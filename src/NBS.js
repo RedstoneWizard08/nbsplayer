@@ -218,6 +218,9 @@ export class Layer {
   get placeholder() {
     return "Layer " + this.id;
   }
+  get getLockIcon() {
+    return require("@/assets/toolbar/lock_"+(this.locked ? "closed" : "open")+".svg")
+  }
 }
 
 /**
@@ -614,7 +617,7 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
     } else {
       writeShort(0)
       writeByte(version)
-      writeByte(9)
+      writeByte(15)
       if (version>=3) {
         writeShort(song.size)
       }
