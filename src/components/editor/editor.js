@@ -97,7 +97,7 @@ export class SongEditor {
    * Sets a note in a song
    */
   setNote(layer, tick, key, instrument) {
-    return this.getLayer(layer).setNote(tick, key, instrument);
+    return this.getLayer(layer).setNote(tick, key, instrument, 100, 100, 0);
   }
 
   /**
