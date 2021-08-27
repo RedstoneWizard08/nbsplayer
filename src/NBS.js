@@ -176,6 +176,7 @@ export class Layer {
      * Is not guaranteed to be unique.
      */
     this.id = id;
+    this.locked = false
   }
 
   /**
@@ -550,16 +551,19 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
       });
     }
   }
-  /*
+  
   // Layers (optional section)
   if (arrayBuffer.byteLength > currentByte) { // FIXME: EOF
     for (let i = 0; i < totalLayers; i++) {
       const layer = song.addLayer();
       layer.name = readString();
+      if (song.version>=4) {
+        layer.locked = readByte()==1
+      }
       layer.volume = readByte() / 100;
       if (song.version>=2) currentByte+=1
     }
-  } */
+  } 
   // TODO: Read instruments
 
   // Process raw notes and convert them to real Note objects.
@@ -610,7 +614,7 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
     } else {
       writeShort(0)
       writeByte(version)
-      writeByte(0)
+      writeByte(9)
       if (version>=3) {
         writeShort(song.size)
       }
@@ -683,6 +687,9 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
     // Part 3 - Layers
     for (const layer of song.layers) {
       writeString(layer.name);
+      if (version>=4) {
+        writeByte(layer.locked ? 1 : 0)
+      }
       writeByte(Math.floor(layer.volume * 100)); // we store volume as 0-1 but it the format needs 0-100
       if (version>=2) {
         writeByte(100)
