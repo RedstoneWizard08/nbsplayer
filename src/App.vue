@@ -102,7 +102,7 @@ export default {
       // If song name & not edited, "Song Name - nbsplayer"
       // If song name & edited, "*Song Name - nbsplayer"
 
-      const base = state.song.name ? `${state.song.name} - nbsplayer` : "nbsplayer";
+      const base = state.song.name ? `${state.song.name} - WebNBS` : "WebNBS";
       if (state.editor.modified) {
         return `*${base}`;
       }

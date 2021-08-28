@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row">
     <div class="about section">
-      <h1>nbsplayer</h1>
+      <h1>WebNBS</h1>
       <p>It's like Note Block Studio.</p>
       <p>Note sounds and textures are owned by Mojang. Not approved by or associated with Mojang.</p>
     </div>
