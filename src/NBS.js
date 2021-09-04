@@ -98,6 +98,15 @@ export class Song {
   deleteLayer(layer) {
     const index = this.layers.indexOf(layer);
     this.layers.splice(index, 1);
+    this.resetLayerID()
+  }
+  /**
+   * Reset layer ID.
+   */
+  resetLayerID() {
+    this.layers.forEach((layer,i) => {
+      layer.id=i+1
+    })
   }
 
   /**
@@ -563,7 +572,7 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
       if (song.version>=4) {
         layer.locked = readByte()==1
       }
-      layer.volume = readByte() / 100;
+      layer.volume = readByte();
       if (song.version>=2) currentByte+=1
     }
   } 
@@ -693,7 +702,7 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
       if (version>=4) {
         writeByte(layer.locked ? 1 : 0)
       }
-      writeByte(Math.floor(layer.volume * 100)); // we store volume as 0-1 but it the format needs 0-100
+      writeByte(layer.volume);
       if (version>=2) {
         writeByte(100)
       }

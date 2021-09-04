@@ -48,6 +48,17 @@ import Toolbar from "./components/toolbar/Toolbar.vue";
 import Keyboard from "./components/keyboard/Keyboard.vue";
 import { state } from "@/state.js";
 
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+
 export default {
   components: {
     Editor,
@@ -76,8 +87,16 @@ export default {
     const instruments = NBS.Instrument.builtin;
     Promise.all(instruments.map((i) => i.load()))
       .then(() => {
-        this.state.loading = false;
-        this.state.showWelcome = true;
+        if (!getQueryVariable("fromURL")) {
+          this.state.loading = false;
+          this.state.showWelcome = true;
+        } else {
+          fetch(getQueryVariable("fromURL")).then(r => r.arrayBuffer()).then(buf => {
+            const song = NBS.Song.fromArrayBuffer(buf)
+            this.state.setSong(song)
+            this.state.loading = false
+          })
+        }
         this.interval = setInterval(() => this.tick());
       });
 
@@ -97,10 +116,10 @@ export default {
   computed: {
     // The title of the browser tab.
     tabTitle() {
-      // If no song name & not edited, "nbsplayer"
-      // If no song name & edited, "*nbsplayer"
-      // If song name & not edited, "Song Name - nbsplayer"
-      // If song name & edited, "*Song Name - nbsplayer"
+      // If no song name & not edited, "WebNBS"
+      // If no song name & edited, "*WebNBS"
+      // If song name & not edited, "Song Name - WebNBS"
+      // If song name & edited, "*Song Name - WebNBS"
 
       const base = state.song.name ? `${state.song.name} - WebNBS` : "WebNBS";
       if (state.editor.modified) {

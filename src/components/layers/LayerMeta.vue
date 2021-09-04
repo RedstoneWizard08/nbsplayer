@@ -2,9 +2,9 @@
   <div class="row layer">
     <div class="child">
       <input type="text" v-model="layer.name" :placeholder="layer.placeholder" name="name">
-      <input type="number" v-model="volume" name="volume" class="no-spinners">
+      <input type="number" v-model="layer.volume" name="volume" class="no-spinners">
       <!-- Janky ['delete'] allows it to call delete() without using the word delete because vue errors if you do that -->
-      <a @click="layer.locked=!layer.locked" :value="layer.locked" class="button" v-model="lock" title="Lock">
+      <a @click="layer.locked=!layer.locked" :value="layer.locked" class="button" title="Lock">
         <img class="button-image" alt="Lock" :src="layer.getLockIcon">
       </a>
       <a class="delete-button" @click="layer['delete']()" title="Delete layer">&times;</a>
@@ -19,7 +19,7 @@ export default {
   props: {
     layer: NBS.Layer,
   },
-  computed: {
+  /*computed: {
     volume: {
       get() {
         return this.layer.volume * 100;
@@ -28,7 +28,7 @@ export default {
         this.layer.volume = volume / 100;
       }
     }
-  }
+  }*/
 };
 </script>
 
