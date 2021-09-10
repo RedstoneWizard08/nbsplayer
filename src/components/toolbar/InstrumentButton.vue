@@ -1,6 +1,6 @@
 <template>
   <a class="button" @click="activate" :value="active" :title="title">
-    <div class="instrument-body">{{ text }}</div>
+    <img :src="require('@/assets/toolbar/instruments/'+this.instrument.name+'.png')">
   </a>
 </template>
 
@@ -16,14 +16,14 @@ export default {
   },
 
   computed: {
-    text() {
+    /*text() {
       const words = this.instrument.name.split(" ");
       if (words.length === 1) {
         return this.instrument.name.substr(0, 2);
       } else {
         return words.slice(0, 2).map((i) => i[0]).join("");
       }
-    },
+    },*/
     active() {
       return this.editor.currentInstrument === this.instrument;
     },

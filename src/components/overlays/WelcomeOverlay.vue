@@ -40,7 +40,7 @@ export default {
         .then(() => this.hide());
     },
     newSong() {
-      state.setSong(Song.new());
+      //state.setSong(Song.new());
       this.hide();
     },
   },

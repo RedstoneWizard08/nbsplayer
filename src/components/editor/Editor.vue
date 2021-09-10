@@ -20,6 +20,12 @@ import * as NBS from "@/NBS.js";
 import { SongEditor } from "./editor.js";
 import { NOTE_SIZE } from "./config.js";
 import * as Objects from "./objects.js";
+import { state } from "@/state.js";
+
+const NOTE_IMG = new Image()
+
+NOTE_IMG.src = require("@/assets/instruments/textures/note.png")
+
 
 export default {
   props: {
@@ -68,6 +74,7 @@ export default {
        * The object currently being interacted with, if any.
        */
       interaction: null,
+      state,
     };
   },
 
@@ -184,7 +191,7 @@ export default {
         canvas.height = NOTE_SIZE;
 
         const ctx = canvas.getContext("2d");
-        ctx.drawImage(instrument.baseTexture, 0, 0);
+        ctx.drawImage(this.state.options.coloredBlock ? instrument.baseTexture : NOTE_IMG, 0, 0);
 
         // Fixes the note textures to be less terrible
         // (darken and add border)

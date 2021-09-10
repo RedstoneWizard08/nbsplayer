@@ -52,10 +52,23 @@ export const state = new Vue({
          * Global volume of the song. (0-1)
          */
         volume: 1,
+        /**
+         * Show colored noteblock.
+         */
+        coloredBlock: true,
       },
     };
 
     data.editor = new SongEditor(data.song);
+
+    try {
+      if (localStorage != undefined && localStorage['options'] != undefined) {
+        const opt = JSON.parse(localStorage['options'])
+        Object.keys(opt).forEach((k) => {
+          data.options[k] = opt[k];
+        })
+      }
+    } catch(e) {}
 
     return data;
   },

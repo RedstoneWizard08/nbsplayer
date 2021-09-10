@@ -101,6 +101,9 @@ export default {
       });
 
     window.onbeforeunload = (e) => {
+      if (localStorage != undefined) {
+        localStorage['options'] = JSON.stringify(this.state.options)
+      }
       if (this.state.editor.modified) {
         // Most browsers don't actually show this message.
         return "Your changes might not be saved";
