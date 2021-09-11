@@ -269,7 +269,7 @@ export class Note {
  * Represents an instrument
  */
 export class Instrument {
-  constructor(name, id, audioSrc, textureSrc, pressKey) {
+  constructor(name, id, audioSrc, textureSrc, iconSrc, pressKey) {
     /**
      * The name of the instrument
      */
@@ -286,6 +286,7 @@ export class Instrument {
      * The image to be fetched for the instrument's image in the editor
      */
     this.textureSrc = textureSrc;
+    this.iconSrc = iconSrc;
     this.pressKey = pressKey;
     /**
      * The resulting audio buffer that will contain the sound
@@ -295,7 +296,7 @@ export class Instrument {
   }
 
   load() {
-    return Promise.all([this.loadAudio(), this.loadTexture()]);
+    return Promise.all([this.loadAudio(), this.loadTexture(), this.loadIcon()]);
   }
 
   /**
@@ -320,6 +321,18 @@ export class Instrument {
       image.onerror = (e) => reject(e);
     });
   }
+  /**
+   * Fetch small icon from Internet.
+   */
+  loadIcon() {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = this.iconSrc;
+      this.iconTexture = image;
+      image.onload = () => resolve(image);
+      image.onerror = (e) => reject(e);
+    });
+  }
 }
 
 /**
@@ -332,6 +345,7 @@ Instrument.builtin = [
     0,
     require("./assets/instruments/audio/harp.ogg"),
     require("./assets/instruments/textures/harp.png"),
+    require("./assets/instruments/icon/harp.png"),
     true
   ),
   new Instrument(
@@ -339,6 +353,7 @@ Instrument.builtin = [
     1,
     require("./assets/instruments/audio/dbass.ogg"),
     require("./assets/instruments/textures/dbass.png"),
+    require("./assets/instruments/icon/dbass.png"),
     false
   ),
   new Instrument(
@@ -346,6 +361,7 @@ Instrument.builtin = [
     2,
     require("./assets/instruments/audio/bdrum.ogg"),
     require("./assets/instruments/textures/bdrum.png"),
+    require("./assets/instruments/icon/bdrum.png"),
     false
   ),
   new Instrument(
@@ -353,6 +369,7 @@ Instrument.builtin = [
     3,
     require("./assets/instruments/audio/sdrum.ogg"),
     require("./assets/instruments/textures/sdrum.png"),
+    require("./assets/instruments/icon/sdrum.png"),
     false
   ),
   new Instrument(
@@ -360,6 +377,7 @@ Instrument.builtin = [
     4,
     require("./assets/instruments/audio/click.ogg"),
     require("./assets/instruments/textures/click.png"),
+    require("./assets/instruments/icon/click.png"),
     false
   ),
   new Instrument(
@@ -367,6 +385,7 @@ Instrument.builtin = [
     5,
     require("./assets/instruments/audio/guitar.ogg"),
     require("./assets/instruments/textures/guitar.png"),
+    require("./assets/instruments/icon/guitar.png"),
     false
   ),
   new Instrument(
@@ -374,6 +393,7 @@ Instrument.builtin = [
     6,
     require("./assets/instruments/audio/flute.ogg"),
     require("./assets/instruments/textures/flute.png"),
+    require("./assets/instruments/icon/flute.png"),
     false
   ),
   new Instrument(
@@ -381,6 +401,7 @@ Instrument.builtin = [
     7,
     require("./assets/instruments/audio/bell.ogg"),
     require("./assets/instruments/textures/bell.png"),
+    require("./assets/instruments/icon/bell.png"),
     false
   ),
   new Instrument(
@@ -388,6 +409,7 @@ Instrument.builtin = [
     8,
     require("./assets/instruments/audio/chime.ogg"),
     require("./assets/instruments/textures/chime.png"),
+    require("./assets/instruments/icon/chime.png"),
     false
   ),
   new Instrument(
@@ -395,6 +417,7 @@ Instrument.builtin = [
     9,
     require("./assets/instruments/audio/xylophone.ogg"),
     require("./assets/instruments/textures/xylophone.png"),
+    require("./assets/instruments/icon/xylophone.png"),
     false
   ),
   new Instrument(
@@ -402,36 +425,42 @@ Instrument.builtin = [
     10,
     require("./assets/instruments/audio/iron_xylophone.ogg"),
     require("./assets/instruments/textures/iron_xylophone.png"),
+    require("./assets/instruments/icon/iron_xylophone.png"),
   ),
   new Instrument(
     "Cow Bell",
     11,
     require("./assets/instruments/audio/cow_bell.ogg"),
     require("./assets/instruments/textures/cow_bell.png"),
+    require("./assets/instruments/icon/cow_bell.png"),
   ),
   new Instrument(
     "Didgeridoo",
     12,
     require("./assets/instruments/audio/didgeridoo.ogg"),
     require("./assets/instruments/textures/didgeridoo.png"),
+    require("./assets/instruments/icon/didgeridoo.png"),
   ),
   new Instrument(
     "Bit",
     13,
     require("./assets/instruments/audio/bit.ogg"),
     require("./assets/instruments/textures/bit.png"),
+    require("./assets/instruments/icon/bit.png"),
   ),
   new Instrument(
     "Banjo",
     14,
     require("./assets/instruments/audio/banjo.ogg"),
     require("./assets/instruments/textures/banjo.png"),
+    require("./assets/instruments/icon/banjo.png"),
   ),
   new Instrument(
     "Pling",
     15,
     require("./assets/instruments/audio/pling.ogg"),
     require("./assets/instruments/textures/pling.png"),
+    require("./assets/instruments/icon/pling.png"),
   ),
 ];
 const MAX_VERSION=5

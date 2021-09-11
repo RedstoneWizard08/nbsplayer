@@ -5,6 +5,9 @@
     <div><label>
       <input type="checkbox" v-model="options.coloredBlock">Show colored note block.
     </label></div>
+    <div><label>
+      <input type="checkbox" v-model="options.smallIcon">Show small icon.
+    </label></div>
     <button @click="hide">Close</button>
   </div>
 </template>

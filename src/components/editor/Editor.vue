@@ -192,10 +192,13 @@ export default {
 
         const ctx = canvas.getContext("2d");
         ctx.drawImage(this.state.options.coloredBlock ? instrument.baseTexture : NOTE_IMG, 0, 0);
+        if (this.state.options.smallIcon) {
+          ctx.drawImage(instrument.iconTexture, 16, 16)
+        }
 
         // Fixes the note textures to be less terrible
         // (darken and add border)
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 4;
         ctx.rect(0, 0, canvas.width, canvas.height);
@@ -209,7 +212,7 @@ export default {
         ctx.textBaseline = "middle";
 
         const text = SongEditor.formatKey(key);
-        ctx.fillText(text, NOTE_SIZE / 2, NOTE_SIZE / 2);
+        ctx.fillText(text, NOTE_SIZE / 2, NOTE_SIZE / 2 - 4);
 
         return canvas;
       };

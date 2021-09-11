@@ -56,6 +56,10 @@ export const state = new Vue({
          * Show colored noteblock.
          */
         coloredBlock: true,
+        /**
+         * Show small icon.
+         */
+        smallIcon: true,
       },
     };
 
