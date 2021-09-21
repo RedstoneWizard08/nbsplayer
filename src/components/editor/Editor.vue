@@ -196,14 +196,15 @@ export default {
           ctx.drawImage(instrument.iconTexture, 16, 16)
         }
 
+        /*
         // Fixes the note textures to be less terrible
         // (darken and add border)
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 4;
         ctx.rect(0, 0, canvas.width, canvas.height);
         ctx.fill();
-        ctx.stroke();
+        ctx.stroke(); */
 
         // Draw the key text centered
         ctx.fillStyle = "white";

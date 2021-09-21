@@ -529,7 +529,9 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
   if (song.size==0) {
     song.version=readByte()
     currentByte+=1
-    song.size=readShort()
+    if(song.version>=3) {
+      song.size=readShort()
+    }
   }
   const totalLayers = readShort();
   song.name = readString();

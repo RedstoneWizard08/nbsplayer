@@ -23,6 +23,7 @@ export default {
     /**
      * Reload texture cache.
      */
+    // FIXME: Cannot reload texture.
     reloadTextureCache() {
         state.editor.textureCache = {}
     }
