@@ -172,9 +172,9 @@ export class Layer {
     this.name = "";
     /**
      * The volume of this layer.
-     * A number between 0 and 1.
+     * A number between 0 and 100.
      */
-    this.volume = 1;
+    this.volume = 100;
     /**
      * The notes within this layer.
      * Not all indexes will have a note.
