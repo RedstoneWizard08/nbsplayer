@@ -2,6 +2,7 @@ import Vue from "vue";
 import { Song, Instrument } from "./NBS.js";
 import { SongEditor } from "./components/editor/editor.js";
 import { WebAudioNotePlayer } from "./audio.js";
+import { Language } from "./language.js"
 
 /**
  * Global shared state.
@@ -60,7 +61,9 @@ export const state = new Vue({
          * Show small icon.
          */
         smallIcon: true,
+        language: "en_US",
       },
+      lang: new Language("en_US"),
     };
 
     data.editor = new SongEditor(data.song);
@@ -73,6 +76,9 @@ export const state = new Vue({
         })
       }
     } catch(e) {}
+
+    if (data.options.language!="en_US") 
+      data.lang.setLanguage(data.options.language)
 
     return data;
   },
