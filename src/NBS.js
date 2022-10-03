@@ -279,10 +279,34 @@ export class Instrument {
   }
 
   /**
+   * A polyfill for fetching in file:// urls.
+   */
+  _fetch(uri) {
+    return new Promise((resolve, reject) => {
+      try {
+        const byteString = atob(uri.default.toString().split(",")[1]);
+        const mime = uri.default.toString().split(",")[0].split(":")[1].split(";")[0];
+
+        const buf = new ArrayBuffer(byteString.length);
+        const arr = new Uint8Array(buf);
+
+        for (let i = 0; i < byteString.length; i++)
+          arr[i] = byteString.charCodeAt(i);
+        
+        const blob = new Blob([buf], { type: mime });
+
+        resolve(blob);
+      } catch(e) {
+        reject(e);
+      }
+    });
+  }
+
+  /**
    * Fetches the sound from the internet
    */
   loadAudio() {
-    return fetch(this.audioSrc)
+    return this._fetch(this.audioSrc)
       .then((data) => data.arrayBuffer())
       .then((audioData) => WebAudioNotePlayer.decodeAudioData(audioData))
       .then((buffer) => this.audioBuffer = buffer);
@@ -294,7 +318,7 @@ export class Instrument {
   loadTexture() {
     return new Promise((resolve, reject) => {
       const image = new Image();
-      image.src = this.textureSrc;
+      image.src = this.textureSrc.default;
       this.baseTexture = image;
       image.onload = () => resolve(image);
       image.onerror = (e) => reject(e);

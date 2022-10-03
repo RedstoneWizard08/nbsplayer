@@ -1,48 +1,48 @@
 <template>
   <div class="toolbar">
     <a @click="newSong" class="button" title="New">
-      <img class="button-image" src="@/assets/toolbar/new.svg" alt="New">
+      <img svg-inline class="button-image" src="@/assets/toolbar/new.svg" alt="New">
     </a>
 
     <a @click="save" class="button" title="Save">
-      <img class="button-image" src="@/assets/toolbar/save.svg" alt="Save">
+      <img svg-inline class="button-image" src="@/assets/toolbar/save.svg" alt="Save">
     </a>
 
     <a class="open button" title="Open">
-      <img class="button-image" src="@/assets/toolbar/open.svg" alt="Open">
+      <img svg-inline class="button-image" src="@/assets/toolbar/open.svg" alt="Open">
       <input type="file" accept=".nbs" @change="loadFile">
     </a>
 
     <div class="separator"></div>
 
     <a @click="play" :value="!paused" class="button" title="Play">
-      <img class="button-image" src="@/assets/toolbar/play.svg" alt="Play">
+      <img svg-inline class="button-image" src="@/assets/toolbar/play.svg" alt="Play">
     </a>
 
     <a @click="pause" :value="paused" class="button" title="Pause">
-      <img class="button-image" src="@/assets/toolbar/pause.svg" alt="Pause">
+      <img svg-inline class="button-image" src="@/assets/toolbar/pause.svg" alt="Pause">
     </a>
 
     <a @click="stop" :value="stopped" class="button" title="Stop">
-      <img class="button-image" src="@/assets/toolbar/stop.svg" alt="Stop">
+      <img svg-inline class="button-image" src="@/assets/toolbar/stop.svg" alt="Stop">
     </a>
 
     <div class="separator"></div>
 
     <a @click="toggleLoop" :value="state.options.loop" title="Loop" class="button">
-      <img class="button-image" src="@/assets/toolbar/loop.svg" alt="Loop">
+      <img svg-inline class="button-image" src="@/assets/toolbar/loop.svg" alt="Loop">
     </a>
 
     <a @click="openInfo" title="Info" class="button">
-      <img class="button-image" src="@/assets/toolbar/info.svg" alt="Info">
+      <img svg-inline class="button-image" src="@/assets/toolbar/info.svg" alt="Info">
     </a>
 
     <a @click="openSettings" title="Settings" class="button">
-      <img class="button-image" src="@/assets/toolbar/settings.svg" alt="Settings">
+      <img svg-inline class="button-image" src="@/assets/toolbar/settings.svg" alt="Settings">
     </a>
 
     <a title="Volume" class="volume button">
-      <img class="button-image" src="@/assets/toolbar/volume.svg" alt="Volume">
+      <img svg-inline class="button-image" src="@/assets/toolbar/volume.svg" alt="Volume">
       <input type="range" name="volume" v-model.number="state.options.volume" min="0" max="1" step="0.01">
       <span class="volume-amount">{{ formattedVolume }}%</span>
     </a>
