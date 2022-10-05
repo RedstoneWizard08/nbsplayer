@@ -1,0 +1,13 @@
+node_modules/
+dist/
+old/
+public/
+.git/
+
+*.ogg
+*.svg
+
+package-lock.json
+
+LICENSE
+*.md
