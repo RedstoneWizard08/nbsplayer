@@ -1,19 +1,34 @@
 {
-    "extends": "@vue/tsconfig/tsconfig.web.json",
-    "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+    "include": ["src"],
     "compilerOptions": {
-        "baseUrl": ".",
+        "baseUrl": "./",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "react": ["./node_modules/preact/compat/"],
+            "react-dom": ["./node_modules/preact/compat/"]
         },
-        "types": ["node"],
         "allowJs": true,
-        "importsNotUsedAsValues": "preserve"
+        "importsNotUsedAsValues": "preserve",
+        "skipLibCheck": true,
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact",
+        "target": "ESNext",
+        "moduleResolution": "Node",
+        "useDefineForClassFields": true,
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "CommonJS",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true
     },
 
     "references": [
         {
-            "path": "./tsconfig.config.json"
+            "path": "./tsconfig.node.json"
         }
     ]
 }

@@ -5,7 +5,7 @@ import { Instrument, Layer, Note, Song } from "@/NBS";
  */
 export class Viewport {
     public firstTick: number;
-    public width: number = 0;
+    public width = 0;
 
     constructor() {
         /**
@@ -96,16 +96,17 @@ export class SongEditor {
             }
         }
 
-        throw new Error("Unknown layer: " + layer);
+        throw new Error(`Unknown layer: ${layer}`);
     }
 
     /**
      * Places a note using the currently active key and instrument
      */
-    placeNote(layer: Layer, tick: number) {
+    placeNote(layer: Layer | number, tick: number) {
         this.modified = true;
+
         return this.setNote(
-            layer,
+            typeof layer == "number" ? this.song.layers[layer] : layer,
             tick,
             this.currentKey,
             this.currentInstrument
@@ -115,7 +116,7 @@ export class SongEditor {
     /**
      * Gets a note
      */
-    getNote(layer: Layer, tick: number) {
+    getNote(layer: Layer | number, tick: number) {
         return this.getLayer(layer).notes[tick];
     }
 
@@ -129,7 +130,7 @@ export class SongEditor {
     /**
      * Deletes a note of a song
      */
-    deleteNote(layer: Layer, tick: number) {
+    deleteNote(layer: Layer | number, tick: number) {
         this.modified = true;
         this.getLayer(layer).deleteNote(tick);
     }
@@ -139,7 +140,8 @@ export class SongEditor {
      * Similar to the "Pick Block" feature of Minecraft.
      */
     pickNote(note: Note) {
-        this.currentInstrument = note.instrument!;
+        if (note.instrument) this.currentInstrument = note.instrument;
+
         this.currentKey = note.key;
     }
 

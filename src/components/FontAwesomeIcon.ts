@@ -12,4 +12,4 @@ library.add(faFile);
 library.add(faFolderOpen);
 library.add(faTimesCircle);
 
-export { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+export { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

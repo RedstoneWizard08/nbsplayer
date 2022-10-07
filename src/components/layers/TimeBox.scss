@@ -1,0 +1,31 @@
+.timebox {
+    font-size: 12px;
+    justify-content: flex-end;
+}
+.timebox > * {
+    margin-right: 10px;
+}
+
+.times {
+    text-align: right;
+}
+.current {
+    font-weight: bold;
+}
+.end {
+    font-size: 11px;
+}
+
+.tempo-container {
+    border: 1px solid black;
+    cursor: text;
+}
+.tempo-container:not([data-vanilla-friendly]) {
+    background-color: rgb(255, 213, 213);
+}
+input[name="tempo"] {
+    width: 35px;
+    text-align: right;
+    border: 0;
+    background-color: inherit;
+}

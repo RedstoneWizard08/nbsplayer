@@ -1,0 +1,71 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+}
+
+/* Make links look more like links by default */
+a {
+    cursor: pointer;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Hide spinners on some numer inputs */
+.no-spinners {
+    -moz-appearance: textfield;
+}
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.flex {
+    display: flex;
+}
+.flex-row {
+    flex-direction: row;
+}
+.flex-column {
+    flex-direction: column;
+}
+.flex-center {
+    align-items: center;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+#middle {
+    /* I don't know why, but I can't get flex to work here. */
+    /* Once the canvas needs a vertical scrollbar, it doesn't grow to match. */
+    /* I really don't want to use grid, but it's the only thing I can get to work. */
+    /* display: flex;
+    flex-direction: row; */
+
+    flex: 1;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 200px auto;
+
+    overflow-y: auto;
+    background-image: url("assets/layersbackground.jpg");
+    background-attachment: local;
+    border-top: 1px solid #777;
+    border-bottom: 1px solid #777;
+}
+#layer-list {
+    border-right: 1px solid #777;
+    width: 200px;
+}
+#editor {
+    flex: 1;
+}
+#keyboard {
+    height: 130px;
+}

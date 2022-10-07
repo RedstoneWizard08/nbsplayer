@@ -37,6 +37,13 @@ const plingTexture = "@assets/instruments/textures/pling.png";
  * NBS.js: JavaScript implementation of parsing, saving, and abstracting .nbs files.
  */
 
+export interface WriterInfo {
+    writeShort: (value: number) => void;
+    writeString: (value: string) => void;
+    writeByte: (value: number) => void;
+    writeInt: (value: number) => void;
+}
+
 /**
  * Represents a song.
  */
@@ -64,7 +71,9 @@ export class Song {
      */
     static new() {
         const song = new Song();
+
         song.addLayer();
+
         return song;
     }
 
@@ -81,7 +90,12 @@ export class Song {
         /**
          * Uses provided data operations to write the data of the song.
          */
-        function write({ writeString, writeByte, writeShort, writeInt }: any) {
+        function write({
+            writeString,
+            writeByte,
+            writeShort,
+            writeInt,
+        }: WriterInfo) {
             // Part 1 - Header
             writeShort(song.size);
             writeShort(song.layers.length);
@@ -131,7 +145,7 @@ export class Song {
                         const jumpsToNextLayer = j - currentLayer;
                         currentLayer = j;
                         writeShort(jumpsToNextLayer); // Part 2 step 2 - jumps to next layer
-                        writeByte(note.instrument?.id); // Part 2 step 3 - instrument
+                        writeByte(note.instrument?.id || 0); // Part 2 step 3 - instrument
                         writeByte(note.key); // Part 2 step 4 - key
                     }
                 }
@@ -298,6 +312,8 @@ export class Song {
         // The format website linked somewhere above does a much better job at explaining this than I could.
         let currentTick = -1;
         const rawNotes = [];
+
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             const jumpsToNextTick = readShort();
             if (jumpsToNextTick === 0) {
@@ -305,6 +321,8 @@ export class Song {
             }
             currentTick += jumpsToNextTick;
             let currentLayer = -1;
+
+            // eslint-disable-next-line no-constant-condition
             while (true) {
                 const jumpsToNextLayer = readShort();
                 if (jumpsToNextLayer === 0) {
@@ -564,7 +582,7 @@ export class Layer {
      * The placeholder name of this layer.
      */
     get placeholder() {
-        return "Layer " + this.id;
+        return `Layer ${this.id}`;
     }
 }
 
@@ -576,7 +594,7 @@ export class Note {
     public tick: number;
     public key: number;
     public instrument?: Instrument;
-    public lastPlayed?: any;
+    public lastPlayed?: number;
 
     constructor(layer: Layer, tick: number) {
         /**
@@ -612,7 +630,7 @@ export class Instrument {
     public id: number;
     public audioSrc: string;
     public textureSrc: string;
-    public pressKey?: any;
+    public pressKey?: boolean;
     public baseTexture?: HTMLImageElement;
     public audioBuffer?: AudioBuffer;
 
@@ -658,7 +676,7 @@ export class Instrument {
         id: number,
         audioSrc: string,
         textureSrc: string,
-        pressKey?: any
+        pressKey?: boolean
     ) {
         /**
          * The name of the instrument
@@ -685,7 +703,7 @@ export class Instrument {
     }
 
     load() {
-        return new Promise(async (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             try {
                 this.loadAudio();
             } catch (e) {

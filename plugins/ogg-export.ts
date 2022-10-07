@@ -1,9 +1,9 @@
 import type { Plugin } from "rollup";
 
-import fs from "fs";
-import path from "path";
-// import path from "path";
+import * as fs from "fs";
+import * as path from "path";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface NBSExportOptions {}
 
 export const NBSExportDefaultOptions: NBSExportOptions = {};

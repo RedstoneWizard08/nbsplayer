@@ -1,19 +1,35 @@
 import { fileURLToPath, URL } from "node:url";
 
 import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
+
+import preact from "@preact/preset-vite";
 
 import ogg from "./plugins/ogg-export";
-import svg from "vite-svg-loader";
 import progress from "vite-plugin-progress";
+import preactRefresh from "@prefresh/vite";
+import babel from "vite-plugin-babel";
 
 export default defineConfig({
-    plugins: [vue(), vueJsx(), ogg(), progress()],
+    plugins: [
+        preact(),
+        ogg(),
+        progress(),
+        babel({
+            babelConfig: {
+                babelrc: true,
+                plugins: ["@babel/plugin-transform-react-jsx-source"],
+            },
+        }),
+    ],
 
     resolve: {
         alias: {
+            // @ts-ignore
             "@": fileURLToPath(new URL("./src", import.meta.url)),
+            react: "preact/compat",
+            "react-dom/test-utils": "preact/test-utils",
+            "react-dom": "preact/compat",
+            "react/jsx-runtime": "preact/jsx-runtime",
         },
     },
 
@@ -23,7 +39,7 @@ export default defineConfig({
         hmr: {
             clientPort: 443,
             port: 3000,
-            protocol: "wss",
+            protocol: "ws",
         },
 
         port: 3000,
@@ -36,5 +52,10 @@ export default defineConfig({
                 format: "commonjs",
             },
         },
+    },
+
+    esbuild: {
+        jsxFactory: "h",
+        jsxFragment: "Fragment",
     },
 });
