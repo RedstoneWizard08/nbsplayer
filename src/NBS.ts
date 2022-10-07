@@ -239,7 +239,8 @@ export class Song {
          * Reads an unsigned byte form the buffer and advances the current byte by 1.
          */
         function readUnsignedByte() {
-            const result = viewer.getUint16(currentByte, true);
+            // @ts-ignore
+            const result = viewer.getUint8(currentByte, true);
             currentByte += 1;
             return result;
         }
@@ -268,11 +269,14 @@ export class Song {
          */
         function readString() {
             const length = readInt();
+
             let result = "";
+
             for (let i = 0; i < length; i++) {
                 const byte = readUnsignedByte();
                 result += String.fromCharCode(byte);
             }
+
             return result;
         }
 

@@ -8,6 +8,7 @@ public/
 *.svg
 
 package-lock.json
+pnpm-lock.yaml
 
 LICENSE
 *.md
