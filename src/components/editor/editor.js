@@ -33,7 +33,7 @@ export class SongEditor {
    */
   static formatKey(key) {
     const KEY_TEXT = [
-      "C-", "C#", "D-", "D#", "E-", "F-", "F#", "G-", "G#", "A-", "A#", "B-", 
+      "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", 
     ];
 
     const keyText = KEY_TEXT[(key - 3) % 12];
@@ -97,7 +97,7 @@ export class SongEditor {
    * Sets a note in a song
    */
   setNote(layer, tick, key, instrument) {
-    return this.getLayer(layer).setNote(tick, key, instrument);
+    return this.getLayer(layer).setNote(tick, key, instrument, 100, 100, 0);
   }
 
   /**

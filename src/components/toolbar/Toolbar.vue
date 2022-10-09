@@ -8,9 +8,9 @@
       <img class="button-image" src="@/assets/toolbar/save.svg" alt="Save">
     </a>
 
-    <a class="open button" title="Open">
+    <a class="open button" title="Open" @click="openFile">
       <img class="button-image" src="@/assets/toolbar/open.svg" alt="Open">
-      <input type="file" accept=".nbs" @change="loadFile">
+      <!--<input type="file" accept=".nbs" @change="loadFile">-->
     </a>
 
     <div class="separator"></div>
@@ -130,6 +130,20 @@ export default {
       this.pause();
       const file = e.target.files[0];
       state.loadFile(file);
+    },
+    /**
+     * Click button event. Let moblie phone playable.
+     */
+    openFile() {
+      const input = document.createElement("input")
+      input.type = "file"
+      input.accept = ".nbs"
+      input.addEventListener("change",e => {
+        this.pause();
+        const file = e.target.files[0];
+        state.loadFile(file);
+      })
+      input.click()
     },
     /**
      * Replaces the existing song with a new empty song.

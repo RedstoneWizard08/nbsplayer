@@ -2,6 +2,7 @@ import Vue from "vue";
 import { Song, Instrument } from "./NBS.js";
 import { SongEditor } from "./components/editor/editor.js";
 import { WebAudioNotePlayer } from "./audio.js";
+import { Language } from "./language.js"
 
 /**
  * Global shared state.
@@ -52,10 +53,32 @@ export const state = new Vue({
          * Global volume of the song. (0-1)
          */
         volume: 1,
+        /**
+         * Show colored noteblock.
+         */
+        coloredBlock: true,
+        /**
+         * Show small icon.
+         */
+        smallIcon: true,
+        language: "en_US",
       },
+      lang: new Language("en_US"),
     };
 
     data.editor = new SongEditor(data.song);
+
+    try {
+      if (localStorage != undefined && localStorage['options'] != undefined) {
+        const opt = JSON.parse(localStorage['options'])
+        Object.keys(opt).forEach((k) => {
+          data.options[k] = opt[k];
+        })
+      }
+    } catch(e) {}
+
+    if (data.options.language!="en_US") 
+      data.lang.setLanguage(data.options.language)
 
     return data;
   },
@@ -102,11 +125,11 @@ export const state = new Vue({
       if (b instanceof Instrument) {
         var key = (typeof note === "number" ? note : note.key);
         var instrument = b;
-        var volume = c ? c.volume : 100;
+        var volume = (c ? c.volume / 100 : 1) * (typeof note === "number" ? 1 : note.velocity / 100);
       } else {
         var key = note.key;
         var instrument = note.instrument;
-        var volume = b ? b.volume : 100;
+        var volume = (b ? b.volume / 100 : 1) * note.velocity / 100;
       }
 
       WebAudioNotePlayer.playNote(key - this.options.keyOffset, instrument, volume);

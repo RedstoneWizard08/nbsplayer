@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row">
     <div class="about section">
-      <h1>nbsplayer</h1>
+      <h1>WebNBS</h1>
       <p>It's like Note Block Studio.</p>
       <p>Note sounds and textures are owned by Mojang. Not approved by or associated with Mojang.</p>
     </div>
@@ -9,16 +9,16 @@
     <div class="actions section">
       <div class="load-song button flex flex-row flex-center">
         <font-awesome-icon icon="folder-open" fixed-width size="2x"></font-awesome-icon>
-        <div class="button-body">Load a song</div>
+        <div class="button-body">{{ lang.getTranslationKey("welcome.load") }}</div>
         <input class="file-input" type="file" accept=".nbs" @change="inputFile">
       </div>
       <div class="new-song button flex flex-row flex-center" @click="newSong">
         <font-awesome-icon icon="file" fixed-width size="2x"></font-awesome-icon>
-        <div class="button-body">Create a new song</div>
+        <div class="button-body">{{ lang.getTranslationKey("welcome.new") }}</div>
       </div>
       <div class="new-song button flex flex-row flex-center" @click="hide">
         <font-awesome-icon icon="times-circle" fixed-width size="2x"></font-awesome-icon>
-        <div class="button-body">Dismiss</div>
+        <div class="button-body">{{ lang.getTranslationKey("dismiss") }}</div>
       </div>
     </div>
   </div>
@@ -29,6 +29,9 @@ import { Song } from "../../NBS.js";
 import { state } from "@/state.js";
 
 export default {
+  data() {
+    return {lang: state.lang}
+  },
   inject: ["hide"],
   methods: {
     inputFile(event) {
@@ -40,7 +43,7 @@ export default {
         .then(() => this.hide());
     },
     newSong() {
-      state.setSong(Song.new());
+      //state.setSong(Song.new());
       this.hide();
     },
   },
