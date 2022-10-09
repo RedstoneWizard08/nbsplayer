@@ -14,14 +14,14 @@ import Octave from "./Octave.vue";
 
 export default {
   props: {
-    editor: SongEditor
+    editor: SongEditor,
   },
 
   components: {
     Key,
     Octave,
   },
-}
+};
 </script>
 
 <style scoped>

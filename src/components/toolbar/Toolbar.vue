@@ -1,49 +1,69 @@
 <template>
   <div class="toolbar">
     <a @click="newSong" class="button" title="New">
-      <img class="button-image" src="@/assets/toolbar/new.svg" alt="New">
+      <img class="button-image" src="@/assets/toolbar/new.svg" alt="New" />
     </a>
 
     <a @click="save" class="button" title="Save">
-      <img class="button-image" src="@/assets/toolbar/save.svg" alt="Save">
+      <img class="button-image" src="@/assets/toolbar/save.svg" alt="Save" />
     </a>
 
     <a class="open button" title="Open" @click="openFile">
-      <img class="button-image" src="@/assets/toolbar/open.svg" alt="Open">
+      <img class="button-image" src="@/assets/toolbar/open.svg" alt="Open" />
       <!--<input type="file" accept=".nbs" @change="loadFile">-->
     </a>
 
     <div class="separator"></div>
 
     <a @click="play" :value="!paused" class="button" title="Play">
-      <img class="button-image" src="@/assets/toolbar/play.svg" alt="Play">
+      <img class="button-image" src="@/assets/toolbar/play.svg" alt="Play" />
     </a>
 
     <a @click="pause" :value="paused" class="button" title="Pause">
-      <img class="button-image" src="@/assets/toolbar/pause.svg" alt="Pause">
+      <img class="button-image" src="@/assets/toolbar/pause.svg" alt="Pause" />
     </a>
 
     <a @click="stop" :value="stopped" class="button" title="Stop">
-      <img class="button-image" src="@/assets/toolbar/stop.svg" alt="Stop">
+      <img class="button-image" src="@/assets/toolbar/stop.svg" alt="Stop" />
     </a>
 
     <div class="separator"></div>
 
-    <a @click="toggleLoop" :value="state.options.loop" title="Loop" class="button">
-      <img class="button-image" src="@/assets/toolbar/loop.svg" alt="Loop">
+    <a
+      @click="toggleLoop"
+      :value="state.options.loop"
+      title="Loop"
+      class="button"
+    >
+      <img class="button-image" src="@/assets/toolbar/loop.svg" alt="Loop" />
     </a>
 
     <a @click="openInfo" title="Info" class="button">
-      <img class="button-image" src="@/assets/toolbar/info.svg" alt="Info">
+      <img class="button-image" src="@/assets/toolbar/info.svg" alt="Info" />
     </a>
 
     <a @click="openSettings" title="Settings" class="button">
-      <img class="button-image" src="@/assets/toolbar/settings.svg" alt="Settings">
+      <img
+        class="button-image"
+        src="@/assets/toolbar/settings.svg"
+        alt="Settings"
+      />
     </a>
 
     <a title="Volume" class="volume button">
-      <img class="button-image" src="@/assets/toolbar/volume.svg" alt="Volume">
-      <input type="range" name="volume" v-model.number="state.options.volume" min="0" max="1" step="0.01">
+      <img
+        class="button-image"
+        src="@/assets/toolbar/volume.svg"
+        alt="Volume"
+      />
+      <input
+        type="range"
+        name="volume"
+        v-model.number="state.options.volume"
+        min="0"
+        max="1"
+        step="0.01"
+      />
       <span class="volume-amount">{{ formattedVolume }}%</span>
     </a>
 
@@ -53,7 +73,8 @@
       v-for="instrument in state.song.instruments"
       :key="instrument.id"
       :instrument="instrument"
-      :editor="state.editor"></instrument-button>
+      :editor="state.editor"
+    ></instrument-button>
   </div>
 </template>
 
@@ -135,15 +156,15 @@ export default {
      * Click button event. Let moblie phone playable.
      */
     openFile() {
-      const input = document.createElement("input")
-      input.type = "file"
-      input.accept = ".nbs"
-      input.addEventListener("change",e => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = ".nbs";
+      input.addEventListener("change", (e) => {
         this.pause();
         const file = e.target.files[0];
         state.loadFile(file);
-      })
-      input.click()
+      });
+      input.click();
     },
     /**
      * Replaces the existing song with a new empty song.
@@ -177,9 +198,9 @@ export default {
 
       // Any changes were just saved locally.
       state.editor.modified = false;
-    }
+    },
   },
-}
+};
 </script>
 
 <style scoped>

@@ -53,9 +53,9 @@ export default {
       if (this.dismissable) {
         this.hide();
       }
-    }
+    },
   },
-}
+};
 </script>
 
 <style scoped>

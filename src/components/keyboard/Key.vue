@@ -1,12 +1,16 @@
 <template>
-  <div class="key" :class="{ sharp, vanilla: vanillaFriendly, selected }" @click="select">
+  <div
+    class="key"
+    :class="{ sharp, vanilla: vanillaFriendly, selected }"
+    @click="select"
+  >
     <div class="text">{{ text }}</div>
   </div>
 </template>
 
 <script>
 import { SongEditor } from "@/components/editor/editor";
-import { state } from '@/state';
+import { state } from "@/state";
 
 export default {
   props: {
@@ -33,7 +37,7 @@ export default {
       state.playNote(this.note, this.editor.currentInstrument);
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -93,5 +97,4 @@ export default {
   /* black & selected */
   background: #505;
 }
-
 </style>

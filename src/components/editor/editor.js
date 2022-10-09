@@ -33,7 +33,18 @@ export class SongEditor {
    */
   static formatKey(key) {
     const KEY_TEXT = [
-      "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", 
+      "C",
+      "C#",
+      "D",
+      "D#",
+      "E",
+      "F",
+      "F#",
+      "G",
+      "G#",
+      "A",
+      "A#",
+      "B",
     ];
 
     const keyText = KEY_TEXT[(key - 3) % 12];

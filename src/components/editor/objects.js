@@ -71,7 +71,7 @@ export class EditorObject {
   }
 
   get centerX() {
-    return this.x + (this.width / 2);
+    return this.x + this.width / 2;
   }
 }
 
@@ -89,8 +89,12 @@ export class Scrollbar extends EditorObject {
   }
 
   update(vm) {
-    this.width = Math.max((vm.editor.viewport.width / vm.song.size) * vm.canvas.width, 12);
-    this.x = vm.editor.viewport.firstTick / vm.song.size * vm.ctx.canvas.width;
+    this.width = Math.max(
+      (vm.editor.viewport.width / vm.song.size) * vm.canvas.width,
+      12
+    );
+    this.x =
+      (vm.editor.viewport.firstTick / vm.song.size) * vm.ctx.canvas.width;
     this.y = vm.canvas.height - this.height;
     this.visible = vm.song.size > vm.editor.viewport.width;
 
@@ -123,7 +127,7 @@ export class Scrollbar extends EditorObject {
   }
 
   dragged(vm, dx, dy) {
-    const ticksMoved = dx / vm.canvas.width * vm.song.size;
+    const ticksMoved = (dx / vm.canvas.width) * vm.song.size;
     const newTick = vm.song.currentTick + ticksMoved;
     vm.song.currentTick = newTick;
     vm.editor.viewport.firstTick = Math.floor(newTick) - 1;
@@ -165,7 +169,8 @@ export class EditorLine extends EditorObject {
 
   update(vm) {
     // Note to children: you **must** call super.update
-    this.x = (this.value - vm.editor.viewport.firstTick) * NOTE_SIZE - (this.width / 2);
+    this.x =
+      (this.value - vm.editor.viewport.firstTick) * NOTE_SIZE - this.width / 2;
     this.height = vm.ctx.canvas.height;
     if (this.draggable && (this.dragging || this.intersectsPoint(vm.mouse))) {
       vm.cursor = "ew-resize";
@@ -285,7 +290,8 @@ export class EditorWrapper extends EditorObject {
 
   interact(vm, button) {
     this.button = button;
-    const tick = Math.floor(vm.mouse.x / NOTE_SIZE) + vm.editor.viewport.firstTick;
+    const tick =
+      Math.floor(vm.mouse.x / NOTE_SIZE) + vm.editor.viewport.firstTick;
     const layer = Math.floor(vm.mouse.y / NOTE_SIZE) - 1;
     if (this.button === 0) {
       const note = vm.editor.placeNote(layer, tick);

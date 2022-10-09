@@ -22,10 +22,9 @@ import { NOTE_SIZE } from "./config.js";
 import * as Objects from "./objects.js";
 import { state } from "@/state.js";
 
-const NOTE_IMG = new Image()
+const NOTE_IMG = new Image();
 
-NOTE_IMG.src = require("@/assets/instruments/textures/note.png")
-
+NOTE_IMG.src = require("@/assets/instruments/textures/note.png");
 
 export default {
   props: {
@@ -191,9 +190,13 @@ export default {
         canvas.height = NOTE_SIZE;
 
         const ctx = canvas.getContext("2d");
-        ctx.drawImage(this.state.options.coloredBlock ? instrument.baseTexture : NOTE_IMG, 0, 0);
+        ctx.drawImage(
+          this.state.options.coloredBlock ? instrument.baseTexture : NOTE_IMG,
+          0,
+          0
+        );
         if (this.state.options.smallIcon) {
-          ctx.drawImage(instrument.iconTexture, 16, 16)
+          ctx.drawImage(instrument.iconTexture, 16, 16);
         }
 
         /*
@@ -245,7 +248,8 @@ export default {
 
           // If the note has been played recently (1s), we will make it render slightly transparent to indicate it
           // was recently played.
-          const timeSincePlayed = note.lastPlayed === null ? Infinity : time - note.lastPlayed;
+          const timeSincePlayed =
+            note.lastPlayed === null ? Infinity : time - note.lastPlayed;
           if (timeSincePlayed < 1000) {
             // Opacity between 1 (played exactly 1s ago) and 0.5 (played exactly 0s ago)
             this.ctx.globalAlpha = 1 - (1000 - timeSincePlayed) / 2000;
@@ -309,10 +313,15 @@ export default {
      */
     isHidden() {
       // https://stackoverflow.com/a/12537298
-      return !!(document.hidden || document.msHidden || document.webkitHidden || document.mozHidden);
-    }
+      return !!(
+        document.hidden ||
+        document.msHidden ||
+        document.webkitHidden ||
+        document.mozHidden
+      );
+    },
   },
-}
+};
 </script>
 
 <style scoped>

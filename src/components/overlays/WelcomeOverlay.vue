@@ -3,21 +3,45 @@
     <div class="about section">
       <h1>WebNBS</h1>
       <p>It's like Note Block Studio.</p>
-      <p>Note sounds and textures are owned by Mojang. Not approved by or associated with Mojang.</p>
+      <p>
+        Note sounds and textures are owned by Mojang. Not approved by or
+        associated with Mojang.
+      </p>
     </div>
 
     <div class="actions section">
       <div class="load-song button flex flex-row flex-center">
-        <font-awesome-icon icon="folder-open" fixed-width size="2x"></font-awesome-icon>
-        <div class="button-body">{{ lang.getTranslationKey("welcome.load") }}</div>
-        <input class="file-input" type="file" accept=".nbs" @change="inputFile">
+        <font-awesome-icon
+          icon="folder-open"
+          fixed-width
+          size="2x"
+        ></font-awesome-icon>
+        <div class="button-body">
+          {{ lang.getTranslationKey("welcome.load") }}
+        </div>
+        <input
+          class="file-input"
+          type="file"
+          accept=".nbs"
+          @change="inputFile"
+        />
       </div>
       <div class="new-song button flex flex-row flex-center" @click="newSong">
-        <font-awesome-icon icon="file" fixed-width size="2x"></font-awesome-icon>
-        <div class="button-body">{{ lang.getTranslationKey("welcome.new") }}</div>
+        <font-awesome-icon
+          icon="file"
+          fixed-width
+          size="2x"
+        ></font-awesome-icon>
+        <div class="button-body">
+          {{ lang.getTranslationKey("welcome.new") }}
+        </div>
       </div>
       <div class="new-song button flex flex-row flex-center" @click="hide">
-        <font-awesome-icon icon="times-circle" fixed-width size="2x"></font-awesome-icon>
+        <font-awesome-icon
+          icon="times-circle"
+          fixed-width
+          size="2x"
+        ></font-awesome-icon>
         <div class="button-body">{{ lang.getTranslationKey("dismiss") }}</div>
       </div>
     </div>
@@ -30,7 +54,7 @@ import { state } from "@/state.js";
 
 export default {
   data() {
-    return {lang: state.lang}
+    return { lang: state.lang };
   },
   inject: ["hide"],
   methods: {
@@ -39,8 +63,7 @@ export default {
         return;
       }
       const file = event.target.files[0];
-      state.loadFile(file)
-        .then(() => this.hide());
+      state.loadFile(file).then(() => this.hide());
     },
     newSong() {
       //state.setSong(Song.new());
@@ -80,7 +103,8 @@ p {
   /* makes the added border on hover not cause any size changes */
   border: 1px solid transparent;
 }
-.button:hover, .button:active {
+.button:hover,
+.button:active {
   border: 1px solid #777;
 }
 .button:active {

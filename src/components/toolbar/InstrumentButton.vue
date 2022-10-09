@@ -1,13 +1,17 @@
 <template>
   <a class="button" @click="activate" :value="active" :title="title">
-    <img :src="require('@/assets/toolbar/instruments/'+this.instrument.name+'.png')">
+    <img
+      :src="
+        require('@/assets/toolbar/instruments/' + this.instrument.name + '.png')
+      "
+    />
   </a>
 </template>
 
 <script>
 import { Instrument } from "@/NBS";
 import { SongEditor } from "@/components/editor/editor";
-import { state } from '@/state';
+import { state } from "@/state";
 
 export default {
   props: {
@@ -36,9 +40,9 @@ export default {
     activate() {
       this.editor.currentInstrument = this.instrument;
       state.playNote(this.editor.currentKey, this.instrument);
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

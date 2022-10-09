@@ -1,4 +1,4 @@
-import { WebAudioNotePlayer } from "./audio";
+import { Instrument } from "./nbs/instrument";
 
 /**
  * NBS.js: JavaScript implementation of parsing, saving, and abstracting .nbs files.
@@ -9,7 +9,7 @@ import { WebAudioNotePlayer } from "./audio";
  */
 export class Song {
   constructor() {
-    this.version = 0
+    this.version = 0;
     /**
      * The name (or title) of this song.
      */
@@ -98,15 +98,15 @@ export class Song {
   deleteLayer(layer) {
     const index = this.layers.indexOf(layer);
     this.layers.splice(index, 1);
-    this.resetLayerID()
+    this.resetLayerID();
   }
   /**
    * Reset layer ID.
    */
   resetLayerID() {
-    this.layers.forEach((layer,i) => {
-      layer.id=i+1
-    })
+    this.layers.forEach((layer, i) => {
+      layer.id = i + 1;
+    });
   }
 
   /**
@@ -131,7 +131,7 @@ export class Song {
    * The time that each takes, in milliseconds.
    */
   get timePerTick() {
-    return 20 / this.tempo * 50;
+    return (20 / this.tempo) * 50;
   }
 
   /**
@@ -185,7 +185,7 @@ export class Layer {
      * Is not guaranteed to be unique.
      */
     this.id = id;
-    this.locked = false
+    this.locked = false;
   }
 
   /**
@@ -206,9 +206,9 @@ export class Layer {
     const note = new Note(this, tick);
     note.key = key;
     note.instrument = instrument;
-    note.velocity = velocity
-    note.panning = panning
-    note.pitch = pitch
+    note.velocity = velocity;
+    note.panning = panning;
+    note.pitch = pitch;
     this.notes[tick] = note;
     return note;
   }
@@ -228,7 +228,9 @@ export class Layer {
     return "Layer " + this.id;
   }
   get getLockIcon() {
-    return require("@/assets/toolbar/lock_"+(this.locked ? "closed" : "open")+".svg")
+    return require("@/assets/toolbar/lock_" +
+      (this.locked ? "closed" : "open") +
+      ".svg");
   }
 }
 
@@ -261,209 +263,11 @@ export class Note {
     this.lastPlayed = null;
     this.velocity = 100;
     this.panning = 100;
-    this.pitch = 0
+    this.pitch = 0;
   }
 }
 
-/**
- * Represents an instrument
- */
-export class Instrument {
-  constructor(name, id, audioSrc, textureSrc, iconSrc, pressKey) {
-    /**
-     * The name of the instrument
-     */
-    this.name = name;
-    /**
-     * The ID of the instrument
-     */
-    this.id = id;
-    /**
-     * The source to be fetched for the instrument's sound
-     */
-    this.audioSrc = audioSrc;
-    /**
-     * The image to be fetched for the instrument's image in the editor
-     */
-    this.textureSrc = textureSrc;
-    this.iconSrc = iconSrc;
-    this.pressKey = pressKey;
-    /**
-     * The resulting audio buffer that will contain the sound
-     * Set by loadAudio() or load()
-     */
-    this.audioBuffer = null;
-  }
-
-  load() {
-    return Promise.all([this.loadAudio(), this.loadTexture(), this.loadIcon()]);
-  }
-
-  /**
-   * Fetches the sound from the internet
-   */
-  loadAudio() {
-    return fetch(this.audioSrc)
-      .then((data) => data.arrayBuffer())
-      .then((audioData) => WebAudioNotePlayer.decodeAudioData(audioData))
-      .then((buffer) => this.audioBuffer = buffer);
-  }
-
-  /**
-   * Fetchs the texture from the internet
-   */
-  loadTexture() {
-    return new Promise((resolve, reject) => {
-      const image = new Image();
-      image.src = this.textureSrc;
-      this.baseTexture = image;
-      image.onload = () => resolve(image);
-      image.onerror = (e) => reject(e);
-    });
-  }
-  /**
-   * Fetch small icon from Internet.
-   */
-  loadIcon() {
-    return new Promise((resolve, reject) => {
-      const image = new Image();
-      image.src = this.iconSrc;
-      this.iconTexture = image;
-      image.onload = () => resolve(image);
-      image.onerror = (e) => reject(e);
-    });
-  }
-}
-
-/**
- * Builtin instruments
- */
-Instrument.builtin = [
-  // Vue will set the correct sources and sometimes inline images using require()
-  new Instrument(
-    "Harp",
-    0,
-    require("./assets/instruments/audio/harp.ogg"),
-    require("./assets/instruments/textures/harp.png"),
-    require("./assets/instruments/icon/harp.png"),
-    true
-  ),
-  new Instrument(
-    "Double Bass",
-    1,
-    require("./assets/instruments/audio/dbass.ogg"),
-    require("./assets/instruments/textures/dbass.png"),
-    require("./assets/instruments/icon/dbass.png"),
-    false
-  ),
-  new Instrument(
-    "Bass Drum",
-    2,
-    require("./assets/instruments/audio/bdrum.ogg"),
-    require("./assets/instruments/textures/bdrum.png"),
-    require("./assets/instruments/icon/bdrum.png"),
-    false
-  ),
-  new Instrument(
-    "Snare Drum",
-    3,
-    require("./assets/instruments/audio/sdrum.ogg"),
-    require("./assets/instruments/textures/sdrum.png"),
-    require("./assets/instruments/icon/sdrum.png"),
-    false
-  ),
-  new Instrument(
-    "Click",
-    4,
-    require("./assets/instruments/audio/click.ogg"),
-    require("./assets/instruments/textures/click.png"),
-    require("./assets/instruments/icon/click.png"),
-    false
-  ),
-  new Instrument(
-    "Guitar",
-    5,
-    require("./assets/instruments/audio/guitar.ogg"),
-    require("./assets/instruments/textures/guitar.png"),
-    require("./assets/instruments/icon/guitar.png"),
-    false
-  ),
-  new Instrument(
-    "Flute",
-    6,
-    require("./assets/instruments/audio/flute.ogg"),
-    require("./assets/instruments/textures/flute.png"),
-    require("./assets/instruments/icon/flute.png"),
-    false
-  ),
-  new Instrument(
-    "Bell",
-    7,
-    require("./assets/instruments/audio/bell.ogg"),
-    require("./assets/instruments/textures/bell.png"),
-    require("./assets/instruments/icon/bell.png"),
-    false
-  ),
-  new Instrument(
-    "Chime",
-    8,
-    require("./assets/instruments/audio/chime.ogg"),
-    require("./assets/instruments/textures/chime.png"),
-    require("./assets/instruments/icon/chime.png"),
-    false
-  ),
-  new Instrument(
-    "Xylophone",
-    9,
-    require("./assets/instruments/audio/xylophone.ogg"),
-    require("./assets/instruments/textures/xylophone.png"),
-    require("./assets/instruments/icon/xylophone.png"),
-    false
-  ),
-  new Instrument(
-    "Iron Xylophone",
-    10,
-    require("./assets/instruments/audio/iron_xylophone.ogg"),
-    require("./assets/instruments/textures/iron_xylophone.png"),
-    require("./assets/instruments/icon/iron_xylophone.png"),
-  ),
-  new Instrument(
-    "Cow Bell",
-    11,
-    require("./assets/instruments/audio/cow_bell.ogg"),
-    require("./assets/instruments/textures/cow_bell.png"),
-    require("./assets/instruments/icon/cow_bell.png"),
-  ),
-  new Instrument(
-    "Didgeridoo",
-    12,
-    require("./assets/instruments/audio/didgeridoo.ogg"),
-    require("./assets/instruments/textures/didgeridoo.png"),
-    require("./assets/instruments/icon/didgeridoo.png"),
-  ),
-  new Instrument(
-    "Bit",
-    13,
-    require("./assets/instruments/audio/bit.ogg"),
-    require("./assets/instruments/textures/bit.png"),
-    require("./assets/instruments/icon/bit.png"),
-  ),
-  new Instrument(
-    "Banjo",
-    14,
-    require("./assets/instruments/audio/banjo.ogg"),
-    require("./assets/instruments/textures/banjo.png"),
-    require("./assets/instruments/icon/banjo.png"),
-  ),
-  new Instrument(
-    "Pling",
-    15,
-    require("./assets/instruments/audio/pling.ogg"),
-    require("./assets/instruments/textures/pling.png"),
-    require("./assets/instruments/icon/pling.png"),
-  ),
-];
-const MAX_VERSION=5
+const MAX_VERSION = 5;
 /**
  * Parses an array buffer containg the bytes of a .nbs file as a Song.
  */
@@ -526,11 +330,11 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
 
   // Header
   song.size = readShort();
-  if (song.size==0) {
-    song.version=readByte()
-    currentByte+=1
-    if(song.version>=3) {
-      song.size=readShort()
+  if (song.size == 0) {
+    song.version = readByte();
+    currentByte += 1;
+    if (song.version >= 3) {
+      song.size = readShort();
     }
   }
   const totalLayers = readShort();
@@ -548,8 +352,9 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
   song.blocksAdded = readInt();
   song.blocksRemoved = readInt();
   song.midiName = readString();
-  if (song.version>=4) { // TODO: loop
-    currentByte+=4
+  if (song.version >= 4) {
+    // TODO: loop
+    currentByte += 4;
   }
 
   // Note Blocks
@@ -571,15 +376,15 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
       currentLayer += jumpsToNextLayer;
       const instrumentId = readByte();
       const key = readByte();
-      let vel,pan,pit;
-      if (song.version>=4) {
-        vel = readByte()
-        pan = readByte()
-        pit = readShort()
+      let vel, pan, pit;
+      if (song.version >= 4) {
+        vel = readByte();
+        pan = readByte();
+        pit = readShort();
       } else {
-        vel = 100
-        pan = 100
-        pit = 0
+        vel = 100;
+        pan = 100;
+        pit = 0;
       }
 
       // We'll process the raw note into a real Note object later.
@@ -594,19 +399,20 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
       });
     }
   }
-  
+
   // Layers (optional section)
-  if (arrayBuffer.byteLength > currentByte) { // FIXME: EOF
+  if (arrayBuffer.byteLength > currentByte) {
+    // FIXME: EOF
     for (let i = 0; i < totalLayers; i++) {
       const layer = song.addLayer();
       layer.name = readString();
-      if (song.version>=4) {
-        layer.locked = readByte()==1
+      if (song.version >= 4) {
+        layer.locked = readByte() == 1;
       }
       layer.volume = readByte();
-      if (song.version>=2) currentByte+=1
+      if (song.version >= 2) currentByte += 1;
     }
-  } 
+  }
   // TODO: Read instruments
 
   // Process raw notes and convert them to real Note objects.
@@ -625,7 +431,7 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
     const tick = rn.tick;
     const instrument = song.instruments[rn.instrument];
 
-    layer.setNote(tick, key, instrument,rn.velocity,rn.panning,rn.pitch);
+    layer.setNote(tick, key, instrument, rn.velocity, rn.panning, rn.pitch);
   }
 
   return song;
@@ -635,7 +441,7 @@ Song.fromArrayBuffer = function songFromArrayBuffer(arrayBuffer) {
  * Converts a song to an array buffer containing the bytes of the corresponding .nbs file
  */
 Song.toArrayBuffer = function songToArrayBuffer(song) {
-  const version = MAX_VERSION
+  const version = MAX_VERSION;
   // https://www.stuffbydavid.com/mcnbs/format
 
   // Writing to a buffer involves 2 "passes".
@@ -645,21 +451,16 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
   /**
    * Uses provided data operations to write the data of the song.
    */
-  function write({
-    writeString,
-    writeByte,
-    writeShort,
-    writeInt,
-  }) {
+  function write({ writeString, writeByte, writeShort, writeInt }) {
     // Part 1 - Header
-    if (version==0) {
+    if (version == 0) {
       writeShort(song.size);
     } else {
-      writeShort(0)
-      writeByte(version)
-      writeByte(15)
-      if (version>=3) {
-        writeShort(song.size)
+      writeShort(0);
+      writeByte(version);
+      writeByte(15);
+      if (version >= 3) {
+        writeShort(song.size);
       }
     }
     writeShort(song.layers.length);
@@ -677,8 +478,8 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
     writeInt(song.blocksAdded); // blocks added
     writeInt(song.blocksRemoved); // blocks removed
     writeString(song.midiName); // midi/schematic name
-    if (version>=4) {
-      writeInt(0) // Loop, length: 4 bytes
+    if (version >= 4) {
+      writeInt(0); // Loop, length: 4 bytes
     }
     // Part 2 - Notes
     let currentTick = -1;
@@ -713,10 +514,10 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
           writeShort(jumpsToNextLayer); // Part 2 step 2 - jumps to next layer
           writeByte(note.instrument.id); // Part 2 step 3 - instrument
           writeByte(note.key); // Part 2 step 4 - key
-          if(version>=4) {
-            writeByte(note.velocity)
-            writeByte(note.panning)
-            writeShort(note.pitch)
+          if (version >= 4) {
+            writeByte(note.velocity);
+            writeByte(note.panning);
+            writeShort(note.pitch);
           }
         }
       }
@@ -730,12 +531,12 @@ Song.toArrayBuffer = function songToArrayBuffer(song) {
     // Part 3 - Layers
     for (const layer of song.layers) {
       writeString(layer.name);
-      if (version>=4) {
-        writeByte(layer.locked ? 1 : 0)
+      if (version >= 4) {
+        writeByte(layer.locked ? 1 : 0);
       }
       writeByte(layer.volume);
-      if (version>=2) {
-        writeByte(100)
+      if (version >= 2) {
+        writeByte(100);
       }
     }
 
@@ -813,3 +614,5 @@ Song.new = function newSong() {
   song.addLayer();
   return song;
 };
+
+export { Instrument };

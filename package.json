@@ -1,7 +1,6 @@
 {
   "name": "nbsplayer",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
@@ -15,6 +14,10 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-service": "^4.5.13",
+    "babel-loader": "^8.2.5",
+    "cache-loader": "^4.1.0",
+    "eslint": "^8.25.0",
+    "prettier": "^2.7.1",
     "vue-template-compiler": "^2.5.17"
   }
 }

@@ -5,8 +5,20 @@
       <div class="end">{{ endTime }}</div>
     </div>
 
-    <div :vanilla-friendly="isVanillaFriendlyTempo" @click.self="focusTempo" class="tempo-container" title="Tempo in ticks per second">
-      <input ref="tempo" type="number" v-model.number="song.tempo" class="no-spinners" name="tempo" step="0.25">
+    <div
+      :vanilla-friendly="isVanillaFriendlyTempo"
+      @click.self="focusTempo"
+      class="tempo-container"
+      title="Tempo in ticks per second"
+    >
+      <input
+        ref="tempo"
+        type="number"
+        v-model.number="song.tempo"
+        class="no-spinners"
+        name="tempo"
+        step="0.25"
+      />
       t/s
     </div>
   </div>
@@ -15,9 +27,7 @@
 <script>
 import * as NBS from "@/NBS.js";
 
-const VANILLA_FRIENDLY_TEMPOS = [
-  2.5, 5, 10,
-];
+const VANILLA_FRIENDLY_TEMPOS = [2.5, 5, 10];
 
 export default {
   props: {
@@ -33,16 +43,24 @@ export default {
     },
     isVanillaFriendlyTempo() {
       return VANILLA_FRIENDLY_TEMPOS.includes(this.song.tempo);
-    }
+    },
   },
 
   methods: {
     formatTime(ms) {
       const time = Math.abs(ms) / 1000;
-      const hours = Math.floor(time / 3600).toString().padStart(2, "0");
-      const minutes = Math.floor(time / 60 % 60).toString().padStart(2, "0");
-      const seconds = Math.floor(time % 60).toString().padStart(2, "0");
-      const millis = Math.floor(Math.abs(ms) % 1000).toString().padStart(3, "0");
+      const hours = Math.floor(time / 3600)
+        .toString()
+        .padStart(2, "0");
+      const minutes = Math.floor((time / 60) % 60)
+        .toString()
+        .padStart(2, "0");
+      const seconds = Math.floor(time % 60)
+        .toString()
+        .padStart(2, "0");
+      const millis = Math.floor(Math.abs(ms) % 1000)
+        .toString()
+        .padStart(3, "0");
       const formatted = `${hours}:${minutes}:${seconds}.${millis}`;
       if (ms < 0) {
         return "-" + formatted;
@@ -53,7 +71,7 @@ export default {
     focusTempo() {
       this.$refs.tempo.focus();
     },
-  }
+  },
 };
 </script>
 

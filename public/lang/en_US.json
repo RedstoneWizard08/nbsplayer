@@ -1,10 +1,10 @@
 {
-	"dismiss": "Dismiss",
-	"welcome.load": "Load a song",
-	"welcome.new": "Create a new song",
-	"settings": "Settings",
-	"settings.language": "Language: ",
-	"settings.keyOffset": "Key offset: ",
-	"settings.coloreBlock": "Show colored note block.",
-	"settings.smallIcon": "Show small icon."
+  "dismiss": "Dismiss",
+  "welcome.load": "Load a song",
+  "welcome.new": "Create a new song",
+  "settings": "Settings",
+  "settings.language": "Language: ",
+  "settings.keyOffset": "Key offset: ",
+  "settings.coloreBlock": "Show colored note block.",
+  "settings.smallIcon": "Show small icon."
 }

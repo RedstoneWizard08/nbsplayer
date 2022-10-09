@@ -2,7 +2,7 @@ import Vue from "vue";
 import { Song, Instrument } from "./NBS.js";
 import { SongEditor } from "./components/editor/editor.js";
 import { WebAudioNotePlayer } from "./audio.js";
-import { Language } from "./language.js"
+import { Language } from "./language.js";
 
 /**
  * Global shared state.
@@ -69,16 +69,16 @@ export const state = new Vue({
     data.editor = new SongEditor(data.song);
 
     try {
-      if (localStorage != undefined && localStorage['options'] != undefined) {
-        const opt = JSON.parse(localStorage['options'])
+      if (localStorage != undefined && localStorage["options"] != undefined) {
+        const opt = JSON.parse(localStorage["options"]);
         Object.keys(opt).forEach((k) => {
           data.options[k] = opt[k];
-        })
+        });
       }
-    } catch(e) {}
+    } catch (e) {}
 
-    if (data.options.language!="en_US") 
-      data.lang.setLanguage(data.options.language)
+    if (data.options.language != "en_US")
+      data.lang.setLanguage(data.options.language);
 
     return data;
   },
@@ -93,7 +93,7 @@ export const state = new Vue({
       if (loop && this.song.tick === this.song.size) {
         this.song.play();
       }
-    }
+    },
   },
 
   methods: {
@@ -108,31 +108,37 @@ export const state = new Vue({
 
     /**
      * Plays a note.
-     * 
+     *
      * playNote(note, instrument, layer?)
      * note - Note | number
      * instrument - Instrument
      * layer (optional) - Layer (if not present, volume is assumed to be 100%)
-     * 
+     *
      * playNote(note, layer?)
      * note - Note
      * layer (optional) - Layer (if not present, volume is assumed to be 100%)
      * Instrument is assumed from note
-     * 
+     *
      * keyOffset is always applied to the note.
      */
     playNote(note, b, c) {
       if (b instanceof Instrument) {
-        var key = (typeof note === "number" ? note : note.key);
+        var key = typeof note === "number" ? note : note.key;
         var instrument = b;
-        var volume = (c ? c.volume / 100 : 1) * (typeof note === "number" ? 1 : note.velocity / 100);
+        var volume =
+          (c ? c.volume / 100 : 1) *
+          (typeof note === "number" ? 1 : note.velocity / 100);
       } else {
         var key = note.key;
         var instrument = note.instrument;
-        var volume = (b ? b.volume / 100 : 1) * note.velocity / 100;
+        var volume = ((b ? b.volume / 100 : 1) * note.velocity) / 100;
       }
 
-      WebAudioNotePlayer.playNote(key - this.options.keyOffset, instrument, volume);
+      WebAudioNotePlayer.playNote(
+        key - this.options.keyOffset,
+        instrument,
+        volume
+      );
     },
 
     /**
@@ -156,7 +162,12 @@ export const state = new Vue({
           }
           this.loading = false;
           this.setSong(song);
-          if (song.name || song.author || song.originalAuthor || song.description) {
+          if (
+            song.name ||
+            song.author ||
+            song.originalAuthor ||
+            song.description
+          ) {
             this.showSongDetails = true;
           }
           resolve(song);

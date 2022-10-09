@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-
     <vue-title :title="tabTitle"></vue-title>
 
     <!-- Overlays -->
@@ -25,11 +24,15 @@
       <toolbar id="toolbar"></toolbar>
       <div id="middle">
         <layer-list :song="state.song" id="layer-list"></layer-list>
-        <editor :song="state.song" :editor="state.editor" ref="canvas" id="editor"></editor>
+        <editor
+          :song="state.song"
+          :editor="state.editor"
+          ref="canvas"
+          id="editor"
+        ></editor>
       </div>
       <keyboard id="keyboard" :editor="state.editor"></keyboard>
     </div>
-
   </div>
 </template>
 
@@ -48,15 +51,16 @@ import Toolbar from "./components/toolbar/Toolbar.vue";
 import Keyboard from "./components/keyboard/Keyboard.vue";
 import { state } from "@/state.js";
 
-function getQueryVariable(variable)
-{
-       var query = window.location.search.substring(1);
-       var vars = query.split("&");
-       for (var i=0;i<vars.length;i++) {
-               var pair = vars[i].split("=");
-               if(pair[0] == variable){return pair[1];}
-       }
-       return(false);
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  }
+  return false;
 }
 
 export default {
@@ -85,24 +89,25 @@ export default {
   mounted() {
     // Load builtin instruments and other assets
     const instruments = NBS.Instrument.builtin;
-    Promise.all(instruments.map((i) => i.load()))
-      .then(() => {
-        if (!getQueryVariable("fromURL")) {
-          this.state.loading = false;
-          this.state.showWelcome = true;
-        } else {
-          fetch(getQueryVariable("fromURL")).then(r => r.arrayBuffer()).then(buf => {
-            const song = NBS.Song.fromArrayBuffer(buf)
-            this.state.setSong(song)
-            this.state.loading = false
-          })
-        }
-        this.interval = setInterval(() => this.tick());
-      });
+    Promise.all(instruments.map((i) => i.load())).then(() => {
+      if (!getQueryVariable("fromURL")) {
+        this.state.loading = false;
+        this.state.showWelcome = true;
+      } else {
+        fetch(getQueryVariable("fromURL"))
+          .then((r) => r.arrayBuffer())
+          .then((buf) => {
+            const song = NBS.Song.fromArrayBuffer(buf);
+            this.state.setSong(song);
+            this.state.loading = false;
+          });
+      }
+      this.interval = setInterval(() => this.tick());
+    });
 
     window.onbeforeunload = (e) => {
       if (localStorage != undefined) {
-        localStorage['options'] = JSON.stringify(this.state.options)
+        localStorage["options"] = JSON.stringify(this.state.options);
       }
       if (this.state.editor.modified) {
         // Most browsers don't actually show this message.
@@ -129,7 +134,7 @@ export default {
         return `*${base}`;
       }
       return base;
-    }
+    },
   },
 
   methods: {
@@ -164,7 +169,7 @@ export default {
 
       for (const layer of song.layers) {
         const note = layer.notes[song.tick];
-        if (note&&!layer.locked) {
+        if (note && !layer.locked) {
           state.playNote(note, layer);
           note.lastPlayed = time;
         }
@@ -191,8 +196,8 @@ export default {
         this.$refs.canvas.update(time);
       }
     },
-  }
-}
+  },
+};
 </script>
 
 <style>

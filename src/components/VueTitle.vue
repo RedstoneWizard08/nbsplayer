@@ -11,10 +11,10 @@ export default {
   watch: {
     title() {
       document.title = this.title;
-    }
+    },
   },
   render() {
     // noop
   },
-}
+};
 </script>

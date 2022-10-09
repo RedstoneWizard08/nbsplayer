@@ -1,7 +1,11 @@
 <template>
   <div class="layer-list">
     <time-box :song="song"></time-box>
-    <layer-meta :layer="layer" :key="layer.id" v-for="layer in song.layers"></layer-meta>
+    <layer-meta
+      :layer="layer"
+      :key="layer.id"
+      v-for="layer in song.layers"
+    ></layer-meta>
     <button @click="song.addLayer()" class="row">+ layer</button>
   </div>
 </template>
@@ -18,8 +22,8 @@ export default {
   components: {
     LayerMeta,
     TimeBox,
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
