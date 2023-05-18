@@ -1,10 +1,10 @@
 {
-  "dismiss": "关闭",
-  "welcome.load": "加载一个音乐",
-  "welcome.new": "创建一个音乐",
-  "settings": "设置",
-  "settings.language": "语言： ",
-  "settings.keyOffset": "按键偏移：",
-  "settings.coloreBlock": "显示染色的音符。",
-  "settings.smallIcon": "显示小图标。"
+    "dismiss": "关闭",
+    "welcome.load": "加载一个音乐",
+    "welcome.new": "创建一个音乐",
+    "settings": "设置",
+    "settings.language": "语言： ",
+    "settings.keyOffset": "按键偏移：",
+    "settings.coloreBlock": "显示染色的音符。",
+    "settings.smallIcon": "显示小图标。"
 }
