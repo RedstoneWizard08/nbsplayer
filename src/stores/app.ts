@@ -88,4 +88,6 @@ export const useAppState = defineStore("app", {
             lang,
         };
     },
+
+    persist: true,
 });

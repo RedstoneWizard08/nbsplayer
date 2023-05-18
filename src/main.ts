@@ -4,12 +4,16 @@ eruda.init();
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import persistence from "pinia-plugin-persistedstate";
 
 import App from "./App.vue";
 import { FontAwesomeIcon } from "./components/FontAwesomeIcon";
 
 const main = async () => {
     const pinia = createPinia();
+
+    pinia.use(persistence);
+
     const app = createApp(App);
 
     app.use(pinia);

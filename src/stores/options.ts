@@ -12,4 +12,6 @@ export const useOptions = defineStore("options", {
 
         return { keyOffset, loop, volume, coloredBlock, smallIcon, language };
     },
+
+    persist: true,
 });
