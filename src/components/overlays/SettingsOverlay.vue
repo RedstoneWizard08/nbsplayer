@@ -4,7 +4,7 @@
         <div>
             <label
                 >{{ lang.getTranslationKey("settings.keyOffset")
-                }}<input type="number" v-model.number="options!.keyOffset"
+                }}<input type="number" v-model="options!.keyOffset"
             /></label>
         </div>
         <div>
@@ -29,6 +29,7 @@
                         lang.setLanguage(($event.target as any).value);
                         options!.language = ($event.target as any).value;
                     "
+                    v-model="options!.language"
                 >
                     <option
                         v-for="opt in lang.available"
