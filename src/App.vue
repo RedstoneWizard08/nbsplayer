@@ -93,7 +93,7 @@ export default {
     async mounted() {
         // Load builtin instruments and other assets
         const instruments = NBS.instruments;
-        
+
         Promise.all(instruments.map((i) => i.load())).then(() => {
             if (!getQueryVariable("fromURL")) {
                 this.state.loading = false;

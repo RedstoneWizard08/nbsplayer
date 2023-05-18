@@ -78,7 +78,7 @@ const generateImports = () => {
 
     for (const instrument of instruments) {
         const imports_ = generateVarImports(instrument[0], instrument[2]);
-        
+
         imports.push(imports_);
     }
 
@@ -94,7 +94,18 @@ const generateConstructors = () => {
         constructors.push(constructor);
     }
 
-    return "export const instruments = [\n" + constructors.map((v) => v.split("\n").map((v) => tab + v).join("\n")).join(",\n") + ",\n];";
+    return (
+        "export const instruments = [\n" +
+        constructors
+            .map((v) =>
+                v
+                    .split("\n")
+                    .map((v) => tab + v)
+                    .join("\n")
+            )
+            .join(",\n") +
+        ",\n];"
+    );
 };
 
 const imports = generateImports();
